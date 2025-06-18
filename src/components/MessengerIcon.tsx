@@ -13,7 +13,7 @@ export default function MessengerIcon({
 }: Props) {
   return (
     <div
-      className="h-23 w-28 fixed z-50 flex flex-col items-center p-2 rounded-md transition hover:backdrop-blur-sm select-none"
+      className="h-23 w-28 fixed z-50 flex flex-col items-center p-2 rounded-md transition select-none hover:bg-white/15"
       style={{
         left: iconPos.x,
         top: iconPos.y,

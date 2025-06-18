@@ -32,18 +32,24 @@ const SendArea = ({ input, setInput, onSubmit, onNudge }: Props) => (
         }}
         className="bg-msn-light border-0 pl-2 pt-2 resize-none w-full min-h-[80px] font-sans text-base outline-none"
         placeholder="Escribí tu mensaje..."
+        aria-label="Campo de texto para escribir tu consulta a MSN Chatbot"
       />
       <div className="flex flex-col">
         <button
           onClick={onSubmit}
           className="text-xs m-1.5 px-3 py-1.5 cursor-pointer bg-gray-100 border border-gray-300 hover:bg-gray-200"
+          aria-label="Enviar tu consulta a MSN Chatbot"
         >
           <u>E</u>nviar
         </button>
       </div>
     </div>
 
-    <div className="msn-info-bar flex items-center px-1.5 text-xs border-b-2 border-msn-border">
+    <div
+      className="msn-info-bar flex items-center px-1.5 text-xs"
+      role="status"
+      aria-live="polite"
+    >
       Último mensaje recibido a las {new Date().toLocaleTimeString()}.
     </div>
   </div>

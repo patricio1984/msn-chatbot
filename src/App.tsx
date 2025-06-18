@@ -47,9 +47,10 @@ export default function App() {
 
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center"
+      className="relative min-h-screen bg-cover bg-center bg-teal-800"
       style={{ backgroundImage: "url('/windows-xp.avif')" }}
     >
+      <h1 className="sr-only">Asistente de Chatbot MSN Messenger Retro</h1>
       <MessengerIcon
         iconPos={iconPos}
         onPointerDown={onPointerDown}

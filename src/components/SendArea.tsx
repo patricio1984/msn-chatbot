@@ -43,7 +43,7 @@ const SendArea = ({ input, setInput, onSubmit, onNudge }: Props) => (
       </div>
     </div>
 
-    <div className="msn-info-bar flex items-center px-1.5 text-xs">
+    <div className="msn-info-bar flex items-center px-1.5 text-xs border-b-2 border-msn-border">
       Last message received at {new Date().toLocaleTimeString()}.
     </div>
   </div>

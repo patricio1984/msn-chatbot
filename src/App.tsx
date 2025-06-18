@@ -12,7 +12,6 @@ export default function App() {
   const [input, setInput] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  // Centrado del ícono (112x92 aprox.)
   const {
     position: iconPos,
     onPointerDown,

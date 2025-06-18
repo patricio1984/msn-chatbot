@@ -25,7 +25,7 @@ export default function useMessengerApi({ messages, setMessages, input, setInput
         headers: {
           Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://tu-sitio.com",
+          "HTTP-Referer": "https://msnchatbot.netlify.app/",
           "X-Title": "MSN Chatbot",
         },
         body: JSON.stringify({

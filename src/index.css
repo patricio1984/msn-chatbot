@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .bg-msn-light {
+    background-color: #fafbfd;
+  }
+
+  .border-msn-border {
+    border-color: #d2dde0;
+  }
+
+  .text-msn-gray {
+    color: #989d9e;
+  }
+}

@@ -1,6 +1,15 @@
 import { useRef, useState, useEffect } from "react";
 
-export default function useDragAndDrop(p0?: { x: number; y: number }) {
+interface DragAndDropOptions {
+  x?: number;
+  y?: number;
+  disableDragOnMobile?: boolean;
+  mobileBreakpoint?: string;
+}
+
+export default function useDragAndDrop(p0?: DragAndDropOptions) {
+  const mobileBreakpoint = p0?.mobileBreakpoint || "(max-width: 639px)";
+
   const [position, setPosition] = useState(() => ({
     x: p0?.x ?? window.innerWidth / 2 - 350,
     y: p0?.y ?? window.innerHeight / 2 - 300,
@@ -10,7 +19,34 @@ export default function useDragAndDrop(p0?: { x: number; y: number }) {
   const draggingRef = useRef(false);
   const offsetRef = useRef({ x: 0, y: 0 });
 
+  const [isDragEnabled, setIsDragEnabled] = useState(true);
+
   useEffect(() => {
+    if (!p0?.disableDragOnMobile) {
+      setIsDragEnabled(true);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia(mobileBreakpoint);
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsDragEnabled(!e.matches);
+    };
+
+    setIsDragEnabled(!mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+    };
+  }, [p0?.disableDragOnMobile, mobileBreakpoint]);
+
+  useEffect(() => {
+    if (!isDragEnabled) {
+      return;
+    }
+
     const handlePointerMove = (e: PointerEvent) => {
       if (!draggingRef.current) return;
       setPosition({
@@ -31,9 +67,11 @@ export default function useDragAndDrop(p0?: { x: number; y: number }) {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, []);
+  }, [isDragEnabled]);
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if (!isDragEnabled) return;
+
     draggingRef.current = true;
     setIsDragging(true);
     offsetRef.current = {
@@ -43,10 +81,10 @@ export default function useDragAndDrop(p0?: { x: number; y: number }) {
   };
 
   const containerStyle: React.CSSProperties = {
-    left: position.x,
-    top: position.y,
+    left: isDragEnabled ? position.x : undefined,
+    top: isDragEnabled ? position.y : undefined,
     position: "fixed",
-    cursor: isDragging ? "grabbing" : "grab",
+    cursor: isDragEnabled ? (isDragging ? "grabbing" : "grab") : "default",
     userSelect: "none",
     touchAction: "none",
     zIndex: 60,
@@ -57,5 +95,6 @@ export default function useDragAndDrop(p0?: { x: number; y: number }) {
     onPointerDown,
     containerStyle,
     isDragging,
+    isDragEnabled,
   };
 }

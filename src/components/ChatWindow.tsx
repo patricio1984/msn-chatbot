@@ -28,22 +28,30 @@ const ChatWindow = forwardRef<HTMLDialogElement, Props>(
       <dialog
         open
         ref={ref}
-        className={`msn-window ${nudge ? "is-nudged" : ""} z-50 fixed flex flex-col font-sans
-        w-[95vw] h-[95vh] sm:w-[600px] sm:h-[600px] md:w-[750px] md:h-[650px]`}
+        className={`msn-window ${
+          nudge ? "is-nudged" : ""
+        } z-50 fixed flex flex-col font-sans
+        w-full h-full sm:w-[600px] sm:h-[600px] md:w-[750px] md:h-[650px]`}
         style={containerStyle}
         role="dialog"
         aria-modal="true"
       >
-        <div onPointerDown={onPointerDown} style={{ userSelect: "none", cursor: containerStyle.cursor }}>
+        <div
+          onPointerDown={onPointerDown}
+          style={{ userSelect: "none", cursor: containerStyle.cursor }}
+        >
           <ChatHeader onClose={onClose} />
         </div>
 
-        <div
-          className="grid sm:grid-cols-[1fr_120px] sm:grid-rows-[1fr_140px] grid-cols-1 grid-rows-[1fr_auto_auto] gap-2.5 h-[calc(100%-120px)] p-2.5"
-        >
+        <div className="grid md:grid-cols-[1fr_120px] md:grid-rows-[1fr_140px] grid-cols-1 grid-rows-[1fr_auto_auto] gap-2.5 h-[calc(100%-120px)] p-2.5">
           <MessageList messages={messages} />
-          <ProfileImage src="/robot.webp" alt="Bot" className="hidden sm:block" />
-          <SendArea input={input} setInput={setInput} onSubmit={onSubmit} onNudge={onNudge} />
+          <ProfileImage src="/robot.webp" alt="Bot" />
+          <SendArea
+            input={input}
+            setInput={setInput}
+            onSubmit={onSubmit}
+            onNudge={onNudge}
+          />
           <ProfileImage src="/duck.webp" alt="User" />
         </div>
       </dialog>

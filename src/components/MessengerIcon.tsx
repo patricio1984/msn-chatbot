@@ -23,7 +23,7 @@ export default function MessengerIcon({
       onPointerDown={onPointerDown}
       onDoubleClick={onDoubleClick}
     >
-      <img src="/msn-icon.webp" alt="MSN Icon" className="w-12" />
+      <img src="/msn-icon.avif" alt="MSN Icon" className="w-12" />
       <span
         className="mt-1 text-white text-center text-xs font-semibold"
         style={{ textShadow: "0 0 3px black" }}

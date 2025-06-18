@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Message } from "../types";
 
 type Props = {
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export default function useMessengerApi({ messages, setMessages, input, setInput }: Props) {
+  const [isFetching, setIsFetching] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -18,6 +21,8 @@ export default function useMessengerApi({ messages, setMessages, input, setInput
     ];
     setMessages(newMessages);
     setInput("");
+
+    setIsFetching(true);
 
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -38,9 +43,12 @@ export default function useMessengerApi({ messages, setMessages, input, setInput
       const assistantReply = data.choices?.[0]?.message?.content ?? "No response";
       setMessages([...newMessages, { role: "assistant", content: assistantReply }]);
     } catch (error) {
+      console.error("Error fetching from API:", error);
       setMessages([...newMessages, { role: "assistant", content: "Error al conectar con la API." }]);
+    } finally {
+      setIsFetching(false);
     }
   };
 
-  return { handleSubmit };
+  return { handleSubmit, isFetching };
 }

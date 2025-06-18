@@ -5,11 +5,11 @@ type Props = {
 const ChatHeader = ({ onClose }: Props) => (
   <div className="border-0">
     <div className="flex p-2.5 items-center">
-      <img src="/msn-icon.webp" alt="MSN" className="w-8 mr-1.5" />
+      <img src="/msn-icon.avif" alt="MSN" className="w-8 mr-1.5" />
       <div className="flex-1">
-        <div className="font-bold mb-1 text-sm">Chatbot Assistant</div>
+        <div className="font-bold mb-1 text-sm">Asistente de Chatbot@Messenger</div>
         <div className="text-msn-gray text-sm tracking-wide">
-          ready to chat • chatbot@messenger.com
+          Listo para chatear • chatbot@messenger.com
         </div>
       </div>
       <button

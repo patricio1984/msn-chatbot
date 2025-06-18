@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { Message } from "../types";
 
 const parseMarkdown = (text: string) => {
@@ -28,44 +29,69 @@ const parseMarkdown = (text: string) => {
 
 type Props = {
   messages: Message[];
+  isFetching: boolean;
 };
 
-const MessageList = ({ messages }: Props) => (
-  <div className="msn-conversation overflow-y-auto p-1.5">
-    {messages.map((msg, i) => (
-      <div key={i} className="my-2">
-        {msg.role === "user" ? (
-          <>
-            <p className="my-2 text-base">Tú says:</p>
-            <p className="ml-5 my-2 text-base">{msg.content}</p>
-          </>
-        ) : (
-          <>
-            {msg.content.includes("nudge") ? (
-              <div className="msn-nudge my-3 ml-1 relative text-base text-gray-600">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: parseMarkdown(msg.content),
-                  }}
-                />
-              </div>
-            ) : (
-              <>
-                <p className="my-2 text-base">Bot says:</p>
-                <div className="ml-5 my-2 text-base">
+const MessageList = ({ messages, isFetching }: Props) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isFetching]);
+
+  return (
+    <div className="msn-conversation overflow-y-auto p-1.5">
+      {messages.map((msg, i) => (
+        <div key={i} className="my-2">
+          {msg.role === "user" ? (
+            <>
+              <p className="my-2 text-base">Tú dices:</p>
+              <p className="ml-5 my-2 text-base">{msg.content}</p>
+            </>
+          ) : (
+            <>
+              {msg.content.includes("nudge") ? (
+                <div className="msn-nudge my-3 ml-1 relative text-base text-gray-600">
                   <span
                     dangerouslySetInnerHTML={{
                       __html: parseMarkdown(msg.content),
                     }}
                   />
                 </div>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    ))}
-  </div>
-);
+              ) : (
+                <>
+                  <p className="my-2 text-base">Bot dice:</p>
+                  <div className="ml-5 my-2 text-base">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(msg.content),
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
+      ))}
+
+      {isFetching && (
+        <div className="my-2">
+          <p className="my-2 text-base">Bot dice:</p>
+          <div className="ml-5 my-2 text-base flex items-center">
+            Pensando
+            <span className="dot-flashing ml-5"></span>
+          </div>
+        </div>
+      )}
+
+      <div ref={messagesEndRef} />
+    </div>
+  );
+};
 
 export default MessageList;

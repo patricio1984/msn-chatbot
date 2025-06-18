@@ -30,7 +30,7 @@ const SendArea = ({ input, setInput, onSubmit, onNudge }: Props) => (
             onSubmit(e);
           }
         }}
-        className="bg-msn-light border-0 pl-2 pt-2 resize-none w-full min-h-[80px] font-sans text-xs outline-none"
+        className="bg-msn-light border-0 pl-2 pt-2 resize-none w-full min-h-[80px] font-sans text-base outline-none"
         placeholder="Escribí tu mensaje..."
       />
       <div className="flex flex-col">
@@ -38,13 +38,13 @@ const SendArea = ({ input, setInput, onSubmit, onNudge }: Props) => (
           onClick={onSubmit}
           className="text-xs m-1.5 px-3 py-1.5 cursor-pointer bg-gray-100 border border-gray-300 hover:bg-gray-200"
         >
-          <u>S</u>end
+          <u>E</u>nviar
         </button>
       </div>
     </div>
 
     <div className="msn-info-bar flex items-center px-1.5 text-xs border-b-2 border-msn-border">
-      Last message received at {new Date().toLocaleTimeString()}.
+      Último mensaje recibido a las {new Date().toLocaleTimeString()}.
     </div>
   </div>
 );

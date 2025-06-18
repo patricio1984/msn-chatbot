@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import MessengerIcon from "./components/MessengerIcon";
 import ChatWindow from "./components/ChatWindow";
 import useDragAndDrop from "./hooks/useDragAndDrop";
@@ -12,6 +12,12 @@ export default function App() {
   const [input, setInput] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  useEffect(() => {
+    if (open && messages.length === 0) {
+      setMessages([{ role: "assistant", content: "¡Hola! ¿En qué puedo ayudarte?" }]);
+    }
+  }, [open, messages.length]);
+
   const {
     position: iconPos,
     onPointerDown,
@@ -21,7 +27,7 @@ export default function App() {
     y: window.innerHeight / 2 - 46,
   });
 
-  const { handleSubmit } = useMessengerApi({
+  const { handleSubmit, isFetching } = useMessengerApi({
     messages,
     setMessages,
     input,
@@ -42,7 +48,7 @@ export default function App() {
   return (
     <div
       className="relative min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/windows-xp.webp')" }}
+      style={{ backgroundImage: "url('/windows-xp.avif')" }}
     >
       <MessengerIcon
         iconPos={iconPos}
@@ -61,6 +67,7 @@ export default function App() {
           onClose={() => setOpen(false)}
           onSubmit={handleSubmit}
           onNudge={handleNudge}
+          isFetching={isFetching}
         />
       )}
     </div>

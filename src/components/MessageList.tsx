@@ -30,9 +30,11 @@ const parseMarkdown = (text: string) => {
 type Props = {
   messages: Message[];
   isFetching: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
-const MessageList = ({ messages, isFetching }: Props) => {
+const MessageList = ({ messages, isFetching, className, style }: Props) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -44,7 +46,10 @@ const MessageList = ({ messages, isFetching }: Props) => {
   }, [messages, isFetching]);
 
   return (
-    <div className="msn-conversation overflow-y-auto p-1.5">
+    <div 
+      className={`msn-conversation overflow-y-auto p-2.5 ${className || ''}`}
+      style={style}
+    >
       {messages.map((msg, i) => (
         <div key={i} className="my-2">
           {msg.role === "user" ? (

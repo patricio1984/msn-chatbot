@@ -2,16 +2,35 @@ type Props = {
   src: string;
   alt: string;
   className?: string;
+  themeColors?: {
+    primary: string;
+    border: string;
+    background: string;
+    toolbarGradient: string;
+  };
 };
 
-export default function ProfileImage({ src, alt, className = "" }: Props) {
+export default function ProfileImage({
+  src,
+  alt,
+  className = "",
+  themeColors,
+}: Props) {
+  const profileStyle = themeColors
+    ? {
+        backgroundColor: themeColors.background,
+        borderColor: themeColors.border,
+      }
+    : {};
+
   return (
-    <div className="msn-profile p-2.5 hidden md:block">
+    <div className="msn-profile p-2.5 hidden md:block" style={profileStyle}>
       <div
-        className={`border border-gray-300 w-[90px] h-[90px] flex items-center justify-center p-1 ${className}`}
+        className={`border border-gray-300 flex items-center justify-center p-1 box-border ${className}`}
         title={alt}
+        style={themeColors ? { borderColor: themeColors.border } : {}}
       >
-        <img src={src} alt={alt} className="max-h-full max-w-full object-contain block" />
+        <img src={src} alt={alt} className="w-full h-full object-cover block" />
       </div>
     </div>
   );

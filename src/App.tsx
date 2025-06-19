@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import MessengerIcon from "./components/MessengerIcon";
-import ChatWindow from "./components/ChatWindow";
+import MessengerIcon from "./components/ui/MessengerIcon";
+import ChatWindow from "./components/chat-window/ChatWindow";
 import useDragAndDrop from "./hooks/useDragAndDrop";
 import useMessengerApi from "./hooks/useMessengerApi";
 import type { Message } from "./types";
@@ -14,7 +14,9 @@ export default function App() {
 
   useEffect(() => {
     if (open && messages.length === 0) {
-      setMessages([{ role: "assistant", content: "¡Hola! ¿En qué puedo ayudarte?" }]);
+      setMessages([
+        { role: "assistant", content: "¡Hola! ¿En qué puedo ayudarte?" },
+      ]);
     }
   }, [open, messages.length]);
 
@@ -39,7 +41,10 @@ export default function App() {
       setNudge(true);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "\ud83e\udd74 You have just sent a nudge." },
+        {
+          role: "assistant",
+          content: "\ud83e\udd74 Acabás de enviar un zumbido.",
+        },
       ]);
       setTimeout(() => setNudge(false), 400);
     }

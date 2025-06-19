@@ -1,11 +1,11 @@
 import { forwardRef, useState } from "react";
-import type { Message } from "../types";
+import type { Message } from "../../types";
 import "./chatWindow.css";
 import ChatHeader from "./ChatHeader";
 import MessageList from "./MessageList";
-import ProfileImage from "./ProfileImage";
+import ProfileImage from "../ui/ProfileImage";
 import SendArea from "./SendArea";
-import useDragAndDrop from "../hooks/useDragAndDrop";
+import useDragAndDrop from "../../hooks/useDragAndDrop";
 
 type Props = {
   nudge: boolean;
@@ -40,15 +40,19 @@ const ChatWindow = forwardRef<HTMLDialogElement, Props>(
       disableDragOnMobile: true,
     });
 
-    // Función para generar colores relacionados basados en el color principal
+    const windowStyle = {
+      left: containerStyle.left,
+      top: containerStyle.top,
+      position: containerStyle.position,
+      zIndex: containerStyle.zIndex,
+    } as React.CSSProperties;
+
     const generateThemeColors = (baseColor: string) => {
-      // Convertir hex a RGB
       const hex = baseColor.replace("#", "");
       const r = parseInt(hex.substr(0, 2), 16);
       const g = parseInt(hex.substr(2, 2), 16);
       const b = parseInt(hex.substr(4, 2), 16);
 
-      // Generar variaciones
       const darkerBorder = `rgb(${Math.max(0, r - 40)}, ${Math.max(
         0,
         g - 40
@@ -97,7 +101,7 @@ const ChatWindow = forwardRef<HTMLDialogElement, Props>(
         fixed inset-0 size-full sm:w-[600px] sm:h-[600px] md:w-[750px] md:h-[650px]
         `}
         style={{
-          ...containerStyle,
+          ...windowStyle,
           ...customStyles,
           backgroundColor: themeColors.primary,
           borderColor: themeColors.border,
@@ -105,20 +109,7 @@ const ChatWindow = forwardRef<HTMLDialogElement, Props>(
         role="dialog"
         aria-modal="true"
       >
-        <div
-          onPointerDown={
-            containerStyle.cursor === "grab" ||
-            containerStyle.cursor === "grabbing"
-              ? onPointerDown
-              : undefined
-          }
-          style={{
-            userSelect: "none",
-            cursor: containerStyle.cursor,
-          }}
-        >
-          <ChatHeader onClose={onClose} />
-        </div>
+        <ChatHeader onClose={onClose} onPointerDown={onPointerDown} />
 
         <div
           className="grid gap-2.5 p-2.5 h-[calc(100%-120px)]

@@ -14,6 +14,7 @@
 * **Ventana Arrastrable:** Mueve la ventana de chat por tu escritorio virtual.
 * **Diseño Responsivo:** Funciona a pantalla completa en dispositivos móviles para una mejor experiencia.
 * **Soporte Markdown:** Las respuestas del bot se renderizan con formato (negritas, código, listas, etc.).
+* **Temas de Color Personalizables:** Cambia el color de la interfaz para que coincida con tu estilo o estado de ánimo. **(¡NUEVA CARACTERÍSTICA!)**
 
 ---
 
@@ -23,6 +24,7 @@
 * **TypeScript:** Para un desarrollo más robusto y escalable.
 * **Tailwind CSS:** Para un diseño rápido y responsivo.
 * **OpenRouter.ai API:** Para la comunicación con el modelo de lenguaje (actualmente usando `deepseek/deepseek-r1-0528-qwen3-8b:free`).
+* **Marked.js:** Para el parseo y renderizado de Markdown en las respuestas del bot. **(¡NUEVA TECNOLOGÍA!)**
 * **Vite:** Herramienta de construcción rápida para el desarrollo.
 
 ---

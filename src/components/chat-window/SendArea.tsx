@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import EmojiPicker from "./EmojiPicker";
+import ColorPickerButton from "./ColorPickerButton";
 
 type Props = {
   input: string;
@@ -15,6 +17,21 @@ type Props = {
   onColorChange?: (color: string) => void;
 };
 
+const EMOJIS = [
+  "😀",
+  "😂",
+  "🥰",
+  "😎",
+  "😭",
+  "😡",
+  "🤔",
+  "🥳",
+  "👍",
+  "👏",
+  "🤩",
+  "💔",
+];
+
 const SendArea = ({
   input,
   setInput,
@@ -24,21 +41,25 @@ const SendArea = ({
   themeColors,
   onColorChange,
 }: Props) => {
-  const [_showColorPicker, setShowColorPicker] = useState(false);
-  const colorInputRef = useRef<HTMLInputElement>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleColorButtonClick = () => {
-    if (colorInputRef.current) {
-      colorInputRef.current.click();
-    }
-  };
+  const handleEmojiClick = (emoji: string) => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
 
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newColor = e.target.value;
-    if (onColorChange) {
-      onColorChange(newColor);
+      const newText = input.substring(0, start) + emoji + input.substring(end);
+      setInput(newText);
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+      }, 0);
+
+      textarea.focus();
     }
-    setShowColorPicker(false);
+    setShowEmojiPicker(false);
   };
 
   const sendAreaStyle = themeColors
@@ -78,31 +99,39 @@ const SendArea = ({
         className="msn-toolbar flex items-center border-b border-msn-border relative"
         style={toolbarStyle}
       >
-        <button className="send-button">😊</button>
+        <div className="relative">
+          <button
+            className="send-button"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            title="Insertar emoticono"
+          >
+            😊
+          </button>
+          {showEmojiPicker && (
+            <EmojiPicker
+              emojis={EMOJIS}
+              onEmojiSelect={handleEmojiClick}
+              onClose={() => setShowEmojiPicker(false)}
+            />
+          )}
+        </div>
+
         <button className="send-button">😉</button>
-        <button className="send-button" onClick={onNudge}>
+        <button
+          className="send-button"
+          onClick={onNudge}
+          title="Enviar zumbido"
+        >
           🥴
         </button>
         <button className="send-button">📢</button>
         <button className="send-button">🔤</button>
 
-        <div className="relative">
-          <button
-            className="send-button relative"
-            onClick={handleColorButtonClick}
-            title="Cambiar color del tema"
-          >
-            🎨
-          </button>
-
-          <input
-            ref={colorInputRef}
-            type="color"
-            onChange={handleColorChange}
-            className="absolute opacity-0 pointer-events-none"
-            defaultValue="#E9F3F6"
-          />
-        </div>
+        <ColorPickerButton
+          onColorChange={(newColor) => {
+            if (onColorChange) onColorChange(newColor);
+          }}
+        />
 
         <button className="send-button">🏞</button>
         <button className="send-button">🎁</button>
@@ -110,6 +139,7 @@ const SendArea = ({
 
       <div className="bg-msn-light flex justify-between" style={textareaStyle}>
         <textarea
+          ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {

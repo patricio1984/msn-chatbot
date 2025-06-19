@@ -1,9 +1,14 @@
 type Props = {
   onClose: () => void;
+  onPointerDown: (e: React.PointerEvent) => void;
 };
 
-const ChatHeader = ({ onClose }: Props) => (
-  <div className="border-0">
+const ChatHeader = ({ onClose, onPointerDown }: Props) => (
+  <div 
+    className="border-0 cursor-grab active:cursor-grabbing"
+    onPointerDown={onPointerDown}
+    style={{ userSelect: "none" }}
+  >
     <div className="flex p-2.5 items-center">
       <img src="/msn-icon.avif" alt="MSN" className="w-8 mr-1.5" />
       <div className="flex-1">

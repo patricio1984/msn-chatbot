@@ -8,7 +8,12 @@ type Props = {
   setInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function useMessengerApi({ messages, setMessages, input, setInput }: Props) {
+export default function useMessengerApi({
+  messages,
+  setMessages,
+  input,
+  setInput,
+}: Props) {
   const [isFetching, setIsFetching] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,26 +30,29 @@ export default function useMessengerApi({ messages, setMessages, input, setInput
     setIsFetching(true);
 
     try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      const response = await fetch("/.netlify/functions/chatAPI", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://msnchatbot.netlify.app/",
-          "X-Title": "MSN Chatbot",
         },
         body: JSON.stringify({
-          model: "deepseek/deepseek-r1-0528-qwen3-8b:free",
           messages: newMessages,
         }),
       });
 
       const data = await response.json();
-      const assistantReply = data.choices?.[0]?.message?.content ?? "No response";
-      setMessages([...newMessages, { role: "assistant", content: assistantReply }]);
+      const assistantReply =
+        data.choices?.[0]?.message?.content ?? "No response";
+      setMessages([
+        ...newMessages,
+        { role: "assistant", content: assistantReply },
+      ]);
     } catch (error) {
       console.error("Error fetching from API:", error);
-      setMessages([...newMessages, { role: "assistant", content: "Error al conectar con la API." }]);
+      setMessages([
+        ...newMessages,
+        { role: "assistant", content: "Error al conectar con la API." },
+      ]);
     } finally {
       setIsFetching(false);
     }

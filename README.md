@@ -26,6 +26,7 @@
 * **OpenRouter.ai API:** Para la comunicación con el modelo de lenguaje (actualmente usando `deepseek/deepseek-r1-0528-qwen3-8b:free`).
 * **Marked.js:** Para el parseo y renderizado de Markdown en las respuestas del bot. **(¡NUEVA TECNOLOGÍA!)**
 * **Vite:** Herramienta de construcción rápida para el desarrollo.
+* **Netlify Functions:** Funciones serverless para proteger tu clave de API y manejar las llamadas a OpenRouter. **(¡NUEVA IMPLEMENTACIÓN!)**
 
 ---
 
@@ -39,29 +40,44 @@ Sigue estos pasos para poner en marcha el proyecto en tu máquina local:
     cd msn-chatbot-assistant
     ```
 
-2.  **Instala las dependencias:**
+2.  **Instala las dependencias (usa `pnpm`, `npm` o `yarn`):**
     ```bash
-    npm install
-    # o
-    yarn install
+    pnpm install
     ```
 
 3.  **Configura tu clave de API de OpenRouter:**
     * Crea una cuenta en [OpenRouter.ai](https://openrouter.ai/).
     * Genera una nueva clave de API.
-    * Crea un archivo `.env` en la raíz de tu proyecto y añade tu clave:
+    * Crea un archivo `.env` en la raíz del proyecto y añade tu clave:
         ```
-        VITE_OPENROUTER_API_KEY=tu_clave_api_aqui
+        OPENROUTER_API_KEY=tu_clave_api_aqui
         ```
-    * **Importante:** Nunca compartas tu clave de API ni la subas a repositorios públicos.
+    * **Importante:** Esta clave solo se usará en entorno local. En producción deberás configurarla desde el panel de Netlify.
 
-4.  **Inicia el servidor de desarrollo:**
+4.  **Ejecuta la app en modo desarrollo (incluye funciones Netlify):**
     ```bash
-    npm run dev
-    # o
-    yarn dev
+    netlify dev
     ```
-    Esto abrirá la aplicación en tu navegador (generalmente en `http://localhost:5173`).
+    Esto iniciará el servidor de desarrollo de Vite y la función serverless al mismo tiempo. Abrirá la app en `http://localhost:8888`.
+
+5.  **(Producción) Configura la variable en Netlify:**
+    * Entra a tu [sitio en Netlify](https://app.netlify.com).
+    * Ve a **Site Settings > Environment variables**.
+    * Agrega:
+        ```
+        OPENROUTER_API_KEY=tu_clave_api_aqui
+        ```
+    * Hacé un nuevo deploy para que se apliquen los cambios.
+
+---
+
+## 📁 Estructura Relevante del Proyecto
+
+```plaintext
+/netlify/functions/chat.ts   ← Función serverless que actúa como proxy seguro hacia OpenRouter
+/src                         ← Código fuente de la app en React
+.env                         ← Contiene tu clave API local (¡NO subir al repo!)
+```
 
 ---
 
